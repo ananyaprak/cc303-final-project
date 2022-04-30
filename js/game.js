@@ -56,6 +56,9 @@ var baseScene = new Phaser.Class({
         this.load.image("tiles", "assets/magecity.png");
         this.load.tilemapTiledJSON("map", "assets/medusaBase.json");
         this.load.spritesheet('p', 'assets/a&mfoe.png', { frameWidth: 64, frameHeight: 64 });
+        this.load.image('echo', 'assets/narcissus_flower.png');
+        this.load.image('antigone', 'assets/grave.png');
+        this.load.image('ritual', 'assets/vase.png');
     },
 
     create: function()
@@ -71,6 +74,12 @@ var baseScene = new Phaser.Class({
         player = this.physics.add.sprite(1630, 1520, 'p').setSize(24,40);
         worldLayer.setCollisionByExclusion([-1]);
         this.physics.add.collider(player, worldLayer);
+
+        var dlc = this.physics.add.staticGroup();
+        echo = dlc.create(1500, 1400, 'echo').setScale(0.1).setSize(200, 300).setOffset(600, 850);
+        antigone = dlc.create(1455, 1620, 'antigone').setScale(0.3).setSize(200, 100).setOffset(400, 300);
+        antigone = dlc.create(1775, 1600, 'ritual').setScale(0.4).setSize(120, 150).setOffset(75, 65);
+        this.physics.add.collider(player, dlc, this.onMeetDLC, false, this);
 
         camera = this.cameras.main;
         camera.startFollow(player);
@@ -100,6 +109,18 @@ var baseScene = new Phaser.Class({
             player.setVelocity(0);
             // player.anims.play('pStraight', true);
          };
+    },
+
+    onMeetDLC: function(player, DLC)
+    {
+        this.message("You haven't bought\nthis DLC yet!", DLC.x, DLC.y);
+    },
+
+    message: function(text, xCoord, yCoord)
+    {
+        var msg = this.add.text(xCoord,yCoord,text,{ font: "30px Arial", fill: "#ff0044", backgroundColor: "#ff0"});
+        msg.visible = true
+        setTimeout(() => { msg.visible = false; }, 1500);
     }
 });
 
@@ -128,11 +149,12 @@ var config = {
     type: Phaser.AUTO,
     width: 800,
     height: 600,
+    pixelArt: true,
     physics: {
         default: 'arcade',
         arcade: {
             gravity: {},
-            debug: false
+            debug: true
         }
     },
     scene: [bootScene, baseScene, statueScene]
