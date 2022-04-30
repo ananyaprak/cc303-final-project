@@ -49,6 +49,11 @@ var bootScene = new Phaser.Class({
         right = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
         keyY = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Y);
         keyN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.N);
+
+        this.input.on('pointerdown', function()
+        {
+            this.scene.start('poseidonScene');
+        }, this);
     },
 
     update: function()
@@ -81,11 +86,6 @@ var baseScene = new Phaser.Class({
 
     create: function()
     {
-        this.input.on('pointerdown', function()
-        {
-            this.scene.start('poseidonScene');
-        }, this);
-
         var map = this.make.tilemap({ key: "map" });
 
         this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
@@ -211,29 +211,6 @@ var statueScene = new Phaser.Class({
     update: function() {}
 });
 
-var poseidonScene = new Phaser.Class({
-    Extends: Phaser.Scene,
-
-    initialize: function poseidonScene ()
-    {
-        Phaser.Scene.call(this, {key: 'poseidonScene'});
-    },
-
-    preload: function()
-    {
-        this.load.image('posBG', 'assets/athenatemple.png');
-        this.load.spritesheet('poseidon', 'assets/poseidon.png', { frameWidth: 64, frameHeight: 64 });
-    },
-
-    create: function()
-    {
-        this.add.image('posBG', 400, 300);
-        this.add.text(100, 100, "Hey, you. Yeah, you! Poseidon here.", { font: "30px Bradley Hand", fill: "#000000", backgroundColor: "#fddab9"});
-    },
-
-    update: function() {}
-});
-
 var templeScene = new Phaser.Class({
     Extends: Phaser.Scene,
 
@@ -291,6 +268,35 @@ var templeScene = new Phaser.Class({
             // player.anims.play('pStraight', true);
          };
     }
+});
+
+var poseidonScene = new Phaser.Class({
+    Extends: Phaser.Scene,
+
+    initialize: function poseidonScene ()
+    {
+        Phaser.Scene.call(this, {key: 'poseidonScene'});
+    },
+
+    preload: function()
+    {
+        this.load.image('posBG', 'assets/athenatemple.png');
+        this.load.spritesheet('poseidon', 'assets/poseidon.png', { frameWidth: 64, frameHeight: 64 });
+    },
+
+    create: function()
+    {
+        this.add.image(400, 300, 'posBG').setScale(3.55);
+        this.physics.add.sprite(600, 380, 'poseidon').setScale(8);
+
+        var style = { font: "30px Bradley Hand", fill: "#000000", backgroundColor: "#fddab9"};
+        var txtOne = this.add.text(100, 100, "Hey, you. Yeah, you! Poseidon here.", style);
+        setTimeout(() => { txtOne.visible = false; }, 3000);
+        setTimeout(() => { txtTwo = this.add.text(100, 100, "pp", style); }, 3000);
+        setTimeout(() => { txtTwo.visible = false; }, 6000);
+    },
+
+    update: function() {}
 });
 
 var config = {
