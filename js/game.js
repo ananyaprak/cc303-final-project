@@ -40,7 +40,7 @@ var bootScene = new Phaser.Class({
 
         this.input.on('pointerdown', function()
         {
-            this.scene.start('profsOne');
+            this.scene.start('profsTwo');
         }, this);
     },
 
@@ -416,9 +416,40 @@ var profsTwo = new Phaser.Class({
         Phaser.Scene.call(this, {key: 'profsTwo'});
     },
 
-    preload: function() {},
+    preload: function()
+    {
+        this.load.image('background', 'assets/statue.png');
+        this.load.spritesheet('br', 'assets/brookerich.png', { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('jg', 'assets/joanngulizio.png', { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('sl', 'assets/stevelundy.png', { frameWidth: 64, frameHeight: 64 });
+        this.load.image('tt1', 'assets/tt1.png');
+        this.load.image('tt2', 'assets/tt2.png');
+        this.load.image('tt3', 'assets/tt3.png');
+    },
 
-    create: function() {},
+    create: function()
+    {
+        this.add.image(400, 300, 'background').setScale(1.3);
+        this.physics.add.sprite(550, 375, 'br').setScale(5);
+        this.physics.add.sprite(625, 375, 'jg').setScale(5);
+        this.physics.add.sprite(700, 375, 'sl').setScale(5);
+
+        var style = { font: "30px Bradley Hand", fill: "#000000", backgroundColor: "#fddab9"};
+        var txtOne = this.add.text(100, 100, "As Ovid says, unwilling Medusa was\n'ravaged' by Poseidon.", style);
+        setTimeout(() => { txtOne.visible = false; }, 7000);
+        setTimeout(() => { txtTwo = this.add.text(100, 100, "Athena, of course, was not happy.", style); }, 7000);
+        setTimeout(() => { txtTwo.visible = false; }, 11000);
+        setTimeout(() => { txtThr = this.add.text(100, 100, "She turned the beautiful maiden's hair into snakes,\nthat turned those that looked at her into stone.", style); }, 11000);
+        setTimeout(() => { txtThr.visible = false; }, 20000);
+        setTimeout(() => { txtFour = this.add.text(100, 100, "Unfortunately, there was more to\npoor Medusa's story.", style); }, 20000);
+        setTimeout(() => { txtFour.visible = false; }, 24000);
+
+        setTimeout(() => { this.add.image(400, 300, 'tt1').setScale(1.2); }, 24000);
+        setTimeout(() => { this.add.image(400, 300, 'tt2').setScale(1.2); }, 26000);
+        setTimeout(() => { this.add.image(400, 300, 'tt3').setScale(1.2); }, 28000);
+
+        setTimeout(() => {this.scene.start('perseusSceneStart');}, 30000);
+    },
 
     update: function() {}
 });
