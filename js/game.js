@@ -40,7 +40,7 @@ var bootScene = new Phaser.Class({
 
         this.input.on('pointerdown', function()
         {
-            this.scene.start('profsTwo');
+            this.scene.start('perseusSceneStart');
         }, this);
     },
 
@@ -289,7 +289,6 @@ var poseidonSceneStart = new Phaser.Class({
         setTimeout(() => { txtThr = this.add.text(100, 100, "Listen, you see that beautiful\nwoman over there?", style); }, 8000);
         setTimeout(() => { txtThr.visible = false; }, 12000);
         setTimeout(() => { txtFour = this.add.text(100, 100, "Do me a favor and go hype me up\nto her, will you?", style); }, 12000);
-        setTimeout(() => {this.scene.restart();}, 16000);
         setTimeout(() => {this.scene.start('templeScene');}, 16000);
     },
 
@@ -358,13 +357,6 @@ var templeScene = new Phaser.Class({
          } else {
             player.setVelocity(0);
          };
-    },
-    
-    onMeetPoseidon: function()
-    {
-        player.x = 2200;
-        player.y = 2350;
-        this.scene.start('poseidonSceneStart');
     },
 
     onMeetMedusa: function()
@@ -454,6 +446,78 @@ var profsTwo = new Phaser.Class({
     update: function() {}
 });
 
+var perseusSceneStart = new Phaser.Class({
+    Extends: Phaser.Scene,
+
+    initialize: function perseusSceneStart ()
+    {
+        Phaser.Scene.call(this, {key: 'perseusSceneStart'});
+    },
+
+    preload: function()
+    {
+        this.load.image("tiles", "assets/magecity.png");
+        this.load.tilemapTiledJSON("mapPer", "assets/perseus.json");
+        this.load.spritesheet('p', 'assets/a&mfoe.png', { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('sss', 'assets/sss.png', { frameWidth: 64, frameHeight: 64 });
+    },
+
+    create: function()
+    {
+        var map = this.make.tilemap({ key: "mapPer" });
+
+        this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+
+        var tileset = map.addTilesetImage("magecity", "tiles");
+        var belowLayer = map.createStaticLayer("Below", tileset);
+        var worldLayer = map.createStaticLayer("World", tileset);
+
+        player = this.physics.add.sprite(1700, 2350, 'p').setSize(24,40).setOffset(20,20);
+        worldLayer.setCollisionByExclusion([-1]);
+        this.physics.add.collider(player, worldLayer);
+
+        var sneks = this.physics.add.staticGroup();
+        sneks.create(1700, 2200, 'sss').setSize(40,14).setOffset(10,34);
+        sneks.create(1800, 2100, 'sss').setSize(40,14).setOffset(10,34);
+        sneks.create(1850, 2350, 'sss').setSize(40,14).setOffset(10,34);
+        sneks.create(1550, 2400, 'sss').setSize(40,14).setOffset(10,34);
+        sneks.create(1650, 2450, 'sss').setSize(40,14).setOffset(10,34);
+        // sneks.create(1600, 2500, 'sss').setSize(40,14).setOffset(10,34);
+        // sneks.create(2000, 2700, 'sss').setSize(40,14).setOffset(10,34);
+        this.physics.add.collider(player, sneks, this.onMeetSnek, false, this);
+
+        camera = this.cameras.main;
+        camera.startFollow(player);
+        camera.setZoom(1.2);
+        camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+    },
+
+    update: function()
+    {
+        if(keyA.isDown || left.isDown) {
+            player.setVelocityX(-160);
+            player.setVelocityY(0);
+         } else if(keyS.isDown || down.isDown) {
+            player.setVelocityX(0);
+            player.setVelocityY(160);
+         } else if(keyD.isDown || right.isDown) {
+            player.setVelocityX(160);
+            player.setVelocityY(0);
+         } else if(keyW.isDown || up.isDown) {
+            player.setVelocityX(0);
+            player.setVelocityY(-160);
+         } else {
+            player.setVelocity(0);
+         };
+    },
+
+    onMeetSnek: function()
+    {
+        player.x = 1700;
+        player.y = 2350;
+    }
+});
+
 var config = {
     type: Phaser.AUTO,
     width: 800,
@@ -467,7 +531,7 @@ var config = {
             debug: true
         }
     },
-    scene: [bootScene, profsIntro, baseScene, medusaStartScene, profsOne, poseidonSceneStart, templeScene, medusaPoseidonScene, profsTwo]
+    scene: [bootScene, profsIntro, baseScene, medusaStartScene, profsOne, poseidonSceneStart, templeScene, medusaPoseidonScene, profsTwo, perseusSceneStart]
 };
 
 var game = new Phaser.Game(config);
