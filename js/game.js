@@ -52,7 +52,7 @@ var bootScene = new Phaser.Class({
 
         this.input.on('pointerdown', function()
         {
-            this.scene.start('templeScene');
+            this.scene.start('medusaPoseidonScene');
         }, this);
     },
 
@@ -210,6 +210,40 @@ var statueScene = new Phaser.Class({
     update: function() {}
 });
 
+var poseidonSceneStart = new Phaser.Class({
+    Extends: Phaser.Scene,
+
+    initialize: function poseidonSceneStart ()
+    {
+        Phaser.Scene.call(this, {key: 'poseidonSceneStart'});
+    },
+
+    preload: function()
+    {
+        this.load.image('posBG', 'assets/athenatemple.png');
+        this.load.spritesheet('poseidon', 'assets/poseidon.png', { frameWidth: 64, frameHeight: 64 });
+    },
+
+    create: function()
+    {
+        this.add.image(400, 300, 'posBG').setScale(3.55);
+        this.physics.add.sprite(600, 380, 'poseidon').setScale(8);
+
+        var style = { font: "30px Bradley Hand", fill: "#000000", backgroundColor: "#fddab9"};
+        var txtOne = this.add.text(100, 100, "Hey, you! Yeah, you. Poseidon here.", style);
+        setTimeout(() => { txtOne.visible = false; }, 4000);
+        setTimeout(() => { txtTwo = this.add.text(100, 100, "Yeah yeah, welcome to Athena's\ntemple and whatnot.", style); }, 4000);
+        setTimeout(() => { txtTwo.visible = false; }, 8000);
+        setTimeout(() => { txtThr = this.add.text(100, 100, "Listen, you see that beautiful\nwoman over there?", style); }, 8000);
+        setTimeout(() => { txtThr.visible = false; }, 12000);
+        setTimeout(() => { txtFour = this.add.text(100, 100, "Do me a favor and go hype me up\nto her, will you?", style); }, 12000);
+        setTimeout(() => {this.scene.restart();}, 16000);
+        setTimeout(() => {this.scene.start('templeScene');}, 16000);
+    },
+
+    update: function() {}
+});
+
 var templeScene = new Phaser.Class({
     Extends: Phaser.Scene,
 
@@ -247,7 +281,7 @@ var templeScene = new Phaser.Class({
         poseidon.body.immovable = true;
         this.physics.add.collider(player, poseidon, this.onMeetPoseidon, false, this);
 
-        medusa = this.physics.add.sprite(1500, 1000, 'medusa').setScale(1.5).setSize(30,40).setOffset(20,20);
+        medusa = this.physics.add.sprite(1650, 1900, 'medusa').setScale(1.5).setSize(40,40).setOffset(10,20);
         medusa.body.immovable = true;
         this.physics.add.collider(player, medusa, this.onMeetMedusa, false, this);
 
@@ -284,43 +318,53 @@ var templeScene = new Phaser.Class({
     onMeetPoseidon: function()
     {
         if (medusaMeet = false)
-        player.x = 2200;
-        player.y = 2350;
-        this.scene.start('poseidonScene');
+        {
+            player.x = 2200;
+            player.y = 2350;
+            this.scene.start('poseidonSceneStart');
+        }
+        else
+        {
+            this.scene.start('poseidonSceneEnd');
+        }
     },
     onMeetMedusa: function()
     {
-
+        player.x = 1550;
+        player.y = 1050;
+        medusaMeet = true;
+        this.scene.start('medusaPoseidonScene');
     }
 });
 
-var poseidonScene = new Phaser.Class({
+var medusaPoseidonScene = new Phaser.Class({
     Extends: Phaser.Scene,
 
-    initialize: function poseidonScene ()
+    initialize: function medusaPoseidonScene ()
     {
-        Phaser.Scene.call(this, {key: 'poseidonScene'});
+        Phaser.Scene.call(this, {key: 'medusaPoseidonScene'});
     },
 
     preload: function()
     {
         this.load.image('posBG', 'assets/athenatemple.png');
-        this.load.spritesheet('poseidon', 'assets/poseidon.png', { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('medusa', 'assets/medusa.png', { frameWidth: 64, frameHeight: 64 });
+
     },
 
     create: function()
     {
         this.add.image(400, 300, 'posBG').setScale(3.55);
-        this.physics.add.sprite(600, 380, 'poseidon').setScale(8);
+        this.physics.add.sprite(200, 380, 'medusa').setScale(8);
 
         var style = { font: "30px Bradley Hand", fill: "#000000", backgroundColor: "#fddab9"};
-        var txtOne = this.add.text(100, 100, "Hey, you! Yeah, you. Poseidon here.", style);
+        var txtOne = this.add.text(300, 100, "Hi! I'm Medusa.", style);
         setTimeout(() => { txtOne.visible = false; }, 4000);
-        setTimeout(() => { txtTwo = this.add.text(100, 100, "Yeah yeah, welcome to Athena's\ntemple and whatnot.", style); }, 4000);
+        setTimeout(() => { txtTwo = this.add.text(300, 100, "That Poseidon guy? Oh, yeah he\nwon't give me a break...", style); }, 4000);
         setTimeout(() => { txtTwo.visible = false; }, 8000);
-        setTimeout(() => { txtThr = this.add.text(100, 100, "Listen, you see that beautiful\nwoman over there?", style); }, 8000);
+        setTimeout(() => { txtThr = this.add.text(300, 100, "...and in a temple, nonetheless!", style); }, 8000);
         setTimeout(() => { txtThr.visible = false; }, 12000);
-        setTimeout(() => { txtFour = this.add.text(100, 100, "Do me a favor and go hype me up\nto her, will you?", style); }, 12000);
+        setTimeout(() => { txtFour = this.add.text(300, 100, "He's a god, you know. I\nguess I have no choice...", style); }, 12000);
         setTimeout(() => {this.scene.restart();}, 16000);
         setTimeout(() => {this.scene.start('templeScene');}, 16000);
     },
@@ -341,7 +385,7 @@ var config = {
             debug: true
         }
     },
-    scene: [bootScene, baseScene, medusaStartScene, statueScene, poseidonScene, templeScene]
+    scene: [bootScene, baseScene, medusaStartScene, statueScene, poseidonSceneStart, templeScene, medusaPoseidonScene]
 };
 
 var game = new Phaser.Game(config);
