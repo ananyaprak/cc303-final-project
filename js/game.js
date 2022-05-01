@@ -24,18 +24,6 @@ var bootScene = new Phaser.Class({
         this.add.text(65, 455, "Expansion Packs: Echo, Antigone, Women in Ritual", { font: "30px Bradley Hand", fill: "#000000"});
         this.add.text(265, 520, "Press Y to Begin", { font: "40px Bradley Hand", fill: "#000000"});
 
-        this.anims.create({
-            key: 'pTurn',
-            frames: this.anims.generateFrameNumbers('p', { start: 0, end: 1 }),
-            frameRate: 10,
-            repeat: -1
-        });
-        this.anims.create({
-            key: 'pStraight',
-            frames: [ { key: 'p', frame: 0 } ],
-            frameRate: 20
-        });
-
         //  arrow key inputs
         cursors = this.input.keyboard.createCursorKeys();
         // this.input.keyboard.on("keydown", this.onKeyInput, this);
@@ -52,7 +40,7 @@ var bootScene = new Phaser.Class({
 
         this.input.on('pointerdown', function()
         {
-            this.scene.start('medusaPoseidonScene');
+            this.scene.start('profsOne');
         }, this);
     },
 
@@ -60,8 +48,53 @@ var bootScene = new Phaser.Class({
     {
         if(keyY.isDown)
         {
-            this.scene.start('baseScene');
+            this.scene.start('profsIntro');
         }
+    }
+});
+
+var profsIntro = new Phaser.Class({
+    Extends: Phaser.Scene,
+
+    initialize: function profsIntro ()
+    {
+        Phaser.Scene.call(this, {key: 'profsIntro'});
+    },
+
+    preload: function()
+    {
+        this.load.spritesheet('br', 'assets/brookerich.png', { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('jg', 'assets/joanngulizio.png', { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('sl', 'assets/stevelundy.png', { frameWidth: 64, frameHeight: 64 });
+        this.load.image('brirl', 'assets/brookeirl.png');
+        this.load.image('jgirl', 'assets/gulizioirl.png');
+        this.load.image('slirl', 'assets/steveirl.png');
+    },
+
+    create: function()
+    {
+        this.add.text(200, 250, "Presented by the Teaching Team...", { font: "30px Bradley Hand", fill: "#000000"})
+        setTimeout(() => {this.irl();}, 2000);
+        setTimeout(() => {this.add.text(300, 290, "(as coded by Ananya)", { font: "20px Bradley Hand", fill: "#000000"});}, 5000);
+        setTimeout(() => {this.sprites();}, 7000);
+        setTimeout(() => {this.add.text(220, 550, "(yeah...I do code instead of art for a reason)", { font: "20px Bradley Hand", fill: "#000000"});;}, 9000);
+        setTimeout(() => {this.scene.start('baseScene');}, 15000);
+    },
+
+    update: function() {},
+
+    irl: function()
+    {
+        this.add.image(100, 100, 'brirl').setScale(0.15);
+        this.add.image(400, 100, 'jgirl').setScale(1);
+        this.add.image(700, 100, 'slirl').setScale(0.2);
+    },
+
+    sprites: function()
+    {
+        this.physics.add.sprite(100, 375, 'br').setScale(5);
+        this.physics.add.sprite(400, 375, 'jg').setScale(5);
+        this.physics.add.sprite(700, 375, 'sl').setScale(5);
     }
 });
 
@@ -119,22 +152,17 @@ var baseScene = new Phaser.Class({
         if(keyA.isDown || left.isDown) {
             player.setVelocityX(-160);
             player.setVelocityY(0);
-            // player.anims.play('pTurn', true);
          } else if(keyS.isDown || down.isDown) {
             player.setVelocityX(0);
             player.setVelocityY(160);
-            // player.anims.play('pTurn', true);
          } else if(keyD.isDown || right.isDown) {
             player.setVelocityX(160);
             player.setVelocityY(0);
-            // player.anims.play('pTurn', true);
          } else if(keyW.isDown || up.isDown) {
             player.setVelocityX(0);
             player.setVelocityY(-160);
-            // player.anims.play('pTurn', true);
          } else {
             player.setVelocity(0);
-            // player.anims.play('pStraight', true);
          };
     },
 
@@ -179,7 +207,7 @@ var medusaStartScene = new Phaser.Class({
     {
         if(keyY.isDown)
         {
-            this.scene.start('statueScene');
+            this.scene.start('profsOne');
         }
         else if(keyN.isDown)
         {
@@ -188,23 +216,47 @@ var medusaStartScene = new Phaser.Class({
     }
 });
 
-var statueScene = new Phaser.Class({
+var profsOne = new Phaser.Class({
     Extends: Phaser.Scene,
 
-    initialize: function statueScene ()
+    initialize: function profsOne ()
     {
-        Phaser.Scene.call(this, {key: 'statueScene'});
+        Phaser.Scene.call(this, {key: 'profsOne'});
     },
 
     preload: function() 
     {
         this.load.image('background', 'assets/statue.png');
+        this.load.spritesheet('br', 'assets/brookerich.png', { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('jg', 'assets/joanngulizio.png', { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('sl', 'assets/stevelundy.png', { frameWidth: 64, frameHeight: 64 });
+        this.load.image('tt1', 'assets/tt1.png');
+        this.load.image('tt2', 'assets/tt2.png');
+        this.load.image('tt3', 'assets/tt3.png');
     },
 
     create: function()
     {
         this.add.image(400, 300, 'background').setScale(1.3);
-        this.add.text(100, 100, "hi", {font: "30px Bradley Hand", fill: "#ff0044"});
+        this.physics.add.sprite(550, 375, 'br').setScale(5);
+        this.physics.add.sprite(625, 375, 'jg').setScale(5);
+        this.physics.add.sprite(700, 375, 'sl').setScale(5);
+
+        var style = { font: "30px Bradley Hand", fill: "#000000", backgroundColor: "#fddab9"};
+        var txtOne = this.add.text(100, 100, "...and here we are at the unveiling\nof the statue, 'Medusa with the\nHead of Perseus'.", style);
+        setTimeout(() => { txtOne.visible = false; }, 6000);
+        setTimeout(() => { txtTwo = this.add.text(100, 100, "We've talked about Lucan's 'The Civil\nWar', where Medusa was a monster\nwho created other monsters.", style); }, 6000);
+        setTimeout(() => { txtTwo.visible = false; }, 12000);
+        setTimeout(() => { txtThr = this.add.text(100, 100, "But here, we see the impact of Ovid's\nMedusa on the #MeToo Movement.", style); }, 12000);
+        setTimeout(() => { txtThr.visible = false; }, 18000);
+        setTimeout(() => { txtFour = this.add.text(100, 100, "Wondering why? Let's step back in time.", style); }, 18000);
+        setTimeout(() => { txtFour.visible = false; }, 24000);
+
+        setTimeout(() => { this.add.image(400, 300, 'tt1').setScale(1.2); }, 24000);
+        setTimeout(() => { this.add.image(400, 300, 'tt2').setScale(1.2); }, 26000);
+        setTimeout(() => { this.add.image(400, 300, 'tt3').setScale(1.2); }, 28000);
+
+        setTimeout(() => {this.scene.start('poseidonSceneStart');}, 30000);
     },
 
     update: function() {}
@@ -271,8 +323,6 @@ var templeScene = new Phaser.Class({
         var belowLayer = map.createStaticLayer("Below", tileset);
         var worldLayer = map.createStaticLayer("World", tileset);
 
-        var medusaMeet = false;
-
         player = this.physics.add.sprite(2200, 2350, 'p').setSize(24,40).setOffset(20,20);
         worldLayer.setCollisionByExclusion([-1]);
         this.physics.add.collider(player, worldLayer);
@@ -296,43 +346,29 @@ var templeScene = new Phaser.Class({
         if(keyA.isDown || left.isDown) {
             player.setVelocityX(-160);
             player.setVelocityY(0);
-            // player.anims.play('pTurn', true);
          } else if(keyS.isDown || down.isDown) {
             player.setVelocityX(0);
             player.setVelocityY(160);
-            // player.anims.play('pTurn', true);
          } else if(keyD.isDown || right.isDown) {
             player.setVelocityX(160);
             player.setVelocityY(0);
-            // player.anims.play('pTurn', true);
          } else if(keyW.isDown || up.isDown) {
             player.setVelocityX(0);
             player.setVelocityY(-160);
-            // player.anims.play('pTurn', true);
          } else {
             player.setVelocity(0);
-            // player.anims.play('pStraight', true);
          };
     },
     
     onMeetPoseidon: function()
     {
-        if (medusaMeet = false)
-        {
-            player.x = 2200;
-            player.y = 2350;
-            this.scene.start('poseidonSceneStart');
-        }
-        else
-        {
-            this.scene.start('poseidonSceneEnd');
-        }
+        player.x = 2200;
+        player.y = 2350;
+        this.scene.start('poseidonSceneStart');
     },
+
     onMeetMedusa: function()
     {
-        player.x = 1550;
-        player.y = 1050;
-        medusaMeet = true;
         this.scene.start('medusaPoseidonScene');
     }
 });
@@ -366,8 +402,23 @@ var medusaPoseidonScene = new Phaser.Class({
         setTimeout(() => { txtThr.visible = false; }, 12000);
         setTimeout(() => { txtFour = this.add.text(300, 100, "He's a god, you know. I\nguess I have no choice...", style); }, 12000);
         setTimeout(() => {this.scene.restart();}, 16000);
-        setTimeout(() => {this.scene.start('templeScene');}, 16000);
+        setTimeout(() => {this.scene.start('profsTwo');}, 16000);
     },
+
+    update: function() {}
+});
+
+var profsTwo = new Phaser.Class({
+    Extends: Phaser.Scene,
+
+    initialize: function profsTwo ()
+    {
+        Phaser.Scene.call(this, {key: 'profsTwo'});
+    },
+
+    preload: function() {},
+
+    create: function() {},
 
     update: function() {}
 });
@@ -385,7 +436,7 @@ var config = {
             debug: true
         }
     },
-    scene: [bootScene, baseScene, medusaStartScene, statueScene, poseidonSceneStart, templeScene, medusaPoseidonScene]
+    scene: [bootScene, profsIntro, baseScene, medusaStartScene, profsOne, poseidonSceneStart, templeScene, medusaPoseidonScene, profsTwo]
 };
 
 var game = new Phaser.Game(config);
