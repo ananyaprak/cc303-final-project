@@ -52,7 +52,7 @@ var bootScene = new Phaser.Class({
 
         this.input.on('pointerdown', function()
         {
-            this.scene.start('poseidonScene');
+            this.scene.start('templeScene');
         }, this);
     },
 
@@ -106,7 +106,6 @@ var baseScene = new Phaser.Class({
 
         medusa = this.physics.add.sprite(1785, 1400, 'medusa').setScale(0.085).setSize(2500, 1500).setOffset(50, 50);
         medusa.body.immovable = true;
-        medusa.setBounce(0);
         this.physics.add.collider(player, medusa, this.onMeetMedusa, false, this);
 
         camera = this.cameras.main;
@@ -223,6 +222,9 @@ var templeScene = new Phaser.Class({
     {
         this.load.image("tiles", "assets/magecity.png");
         this.load.tilemapTiledJSON("mapPos", "assets/poseidon.json");
+        this.load.spritesheet('p', 'assets/a&mfoe.png', { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('poseidon', 'assets/poseidon.png', { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('medusa', 'assets/medusa.png', { frameWidth: 64, frameHeight: 64 });
     },
 
     create: function()
@@ -235,9 +237,19 @@ var templeScene = new Phaser.Class({
         var belowLayer = map.createStaticLayer("Below", tileset);
         var worldLayer = map.createStaticLayer("World", tileset);
 
-        player = this.physics.add.sprite(1630, 2000, 'p').setSize(24,40).setOffset(20,20);
+        var medusaMeet = false;
+
+        player = this.physics.add.sprite(2200, 2350, 'p').setSize(24,40).setOffset(20,20);
         worldLayer.setCollisionByExclusion([-1]);
         this.physics.add.collider(player, worldLayer);
+
+        poseidon = this.physics.add.sprite(2150, 2200, 'poseidon').setScale(1.5).setSize(30,40).setOffset(20,20);
+        poseidon.body.immovable = true;
+        this.physics.add.collider(player, poseidon, this.onMeetPoseidon, false, this);
+
+        medusa = this.physics.add.sprite(1500, 1000, 'medusa').setScale(1.5).setSize(30,40).setOffset(20,20);
+        medusa.body.immovable = true;
+        this.physics.add.collider(player, medusa, this.onMeetMedusa, false, this);
 
         camera = this.cameras.main;
         camera.startFollow(player);
@@ -267,6 +279,18 @@ var templeScene = new Phaser.Class({
             player.setVelocity(0);
             // player.anims.play('pStraight', true);
          };
+    },
+    
+    onMeetPoseidon: function()
+    {
+        if (medusaMeet = false)
+        player.x = 2200;
+        player.y = 2350;
+        this.scene.start('poseidonScene');
+    },
+    onMeetMedusa: function()
+    {
+
     }
 });
 
@@ -290,10 +314,15 @@ var poseidonScene = new Phaser.Class({
         this.physics.add.sprite(600, 380, 'poseidon').setScale(8);
 
         var style = { font: "30px Bradley Hand", fill: "#000000", backgroundColor: "#fddab9"};
-        var txtOne = this.add.text(100, 100, "Hey, you. Yeah, you! Poseidon here.", style);
-        setTimeout(() => { txtOne.visible = false; }, 3000);
-        setTimeout(() => { txtTwo = this.add.text(100, 100, "pp", style); }, 3000);
-        setTimeout(() => { txtTwo.visible = false; }, 6000);
+        var txtOne = this.add.text(100, 100, "Hey, you! Yeah, you. Poseidon here.", style);
+        setTimeout(() => { txtOne.visible = false; }, 4000);
+        setTimeout(() => { txtTwo = this.add.text(100, 100, "Yeah yeah, welcome to Athena's\ntemple and whatnot.", style); }, 4000);
+        setTimeout(() => { txtTwo.visible = false; }, 8000);
+        setTimeout(() => { txtThr = this.add.text(100, 100, "Listen, you see that beautiful\nwoman over there?", style); }, 8000);
+        setTimeout(() => { txtThr.visible = false; }, 12000);
+        setTimeout(() => { txtFour = this.add.text(100, 100, "Do me a favor and go hype me up\nto her, will you?", style); }, 12000);
+        setTimeout(() => {this.scene.restart();}, 16000);
+        setTimeout(() => {this.scene.start('templeScene');}, 16000);
     },
 
     update: function() {}
@@ -312,7 +341,7 @@ var config = {
             debug: true
         }
     },
-    scene: [bootScene, baseScene, medusaStartScene, statueScene, poseidonScene]
+    scene: [bootScene, baseScene, medusaStartScene, statueScene, poseidonScene, templeScene]
 };
 
 var game = new Phaser.Game(config);
