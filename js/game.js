@@ -2,6 +2,7 @@ var cursors;
 var keyA, keyS, keyD, keyW;
 var up, down, left, right;
 var keyY, keyN;
+var sg = 0;
 
 var bootScene = new Phaser.Class({
 
@@ -40,7 +41,7 @@ var bootScene = new Phaser.Class({
 
         this.input.on('pointerdown', function()
         {
-            this.scene.start('perseusSceneStart');
+            this.scene.start('sunglassesSceneStart');
         }, this);
     },
 
@@ -289,7 +290,7 @@ var poseidonSceneStart = new Phaser.Class({
         setTimeout(() => { txtThr = this.add.text(100, 100, "Listen, you see that beautiful\nwoman over there?", style); }, 8000);
         setTimeout(() => { txtThr.visible = false; }, 12000);
         setTimeout(() => { txtFour = this.add.text(100, 100, "Do me a favor and go hype me up\nto her, will you?", style); }, 12000);
-        setTimeout(() => {this.scene.start('templeScene');}, 16000);
+        setTimeout(() => { this.scene.start('templeScene'); }, 16000);
     },
 
     update: function() {}
@@ -390,10 +391,9 @@ var medusaPoseidonScene = new Phaser.Class({
         setTimeout(() => { txtOne.visible = false; }, 4000);
         setTimeout(() => { txtTwo = this.add.text(300, 100, "That Poseidon guy? Oh, yeah he\nwon't give me a break...", style); }, 4000);
         setTimeout(() => { txtTwo.visible = false; }, 8000);
-        setTimeout(() => { txtThr = this.add.text(300, 100, "...and in a temple, nonetheless!", style); }, 8000);
+        setTimeout(() => { txtThr = this.add.text(300, 100, "...and in a temple too, the\naudacity!", style); }, 8000);
         setTimeout(() => { txtThr.visible = false; }, 12000);
         setTimeout(() => { txtFour = this.add.text(300, 100, "He's a god, you know. I\nguess I have no choice...", style); }, 12000);
-        setTimeout(() => {this.scene.restart();}, 16000);
         setTimeout(() => {this.scene.start('profsTwo');}, 16000);
     },
 
@@ -442,6 +442,110 @@ var profsTwo = new Phaser.Class({
 
         setTimeout(() => {this.scene.start('perseusSceneStart');}, 30000);
     },
+
+    update: function() {}
+});
+
+var sunglassesSceneStart = new Phaser.Class({
+    Extends: Phaser.Scene,
+
+    initialize: function sunglassesSceneStart ()
+    {
+        Phaser.Scene.call(this, {key: 'sunglassesSceneStart'});
+    },
+
+    preload: function()
+    {
+        this.load.image("tiles", "assets/magecity.png");
+        this.load.tilemapTiledJSON("mapPer", "assets/perseus.json");
+        this.load.spritesheet('p', 'assets/a&mfoe.png', { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('evil', 'assets/medusaEvil.png', { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('shades', 'assets/sunglasses.png', { frameWidth: 32, frameHeight: 32 });
+    },
+
+    create: function()
+    {
+        var map = this.make.tilemap({ key: "mapPer" });
+
+        this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+
+        var tileset = map.addTilesetImage("magecity", "tiles");
+        var belowLayer = map.createStaticLayer("Below", tileset);
+        var worldLayer = map.createStaticLayer("World", tileset);
+
+        player = this.physics.add.sprite(1000, 2100, 'p').setSize(24,40).setOffset(20,20);
+        worldLayer.setCollisionByExclusion([-1]);
+        this.physics.add.collider(player, worldLayer);
+
+        evil = this.physics.add.sprite(850, 1900, 'evil').setScale(1.5).setSize(30,40).setOffset(20,20);
+        evil.body.immovable = true;
+        this.physics.add.collider(player, evil, this.meetEvil, false, this);
+
+        shades = this.physics.add.sprite(787.5, 1712.5, 'shades');
+        this.physics.add.collider(player, shades, this.swag, false, this);
+
+        camera = this.cameras.main;
+        camera.startFollow(player);
+        camera.setZoom(1.2);
+        camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+    },
+
+    update: function()
+    {
+        if(keyA.isDown || left.isDown) {
+            player.setVelocityX(-160);
+            player.setVelocityY(0);
+         } else if(keyS.isDown || down.isDown) {
+            player.setVelocityX(0);
+            player.setVelocityY(160);
+         } else if(keyD.isDown || right.isDown) {
+            player.setVelocityX(160);
+            player.setVelocityY(0);
+         } else if(keyW.isDown || up.isDown) {
+            player.setVelocityX(0);
+            player.setVelocityY(-160);
+         } else {
+            player.setVelocity(0);
+         };
+    },
+
+    meetEvil: function()
+    {
+        if (sg == 1)
+        {
+            this.scene.start('medusaSadgeScene');
+        }
+        else
+        {
+            this.message("No! You shouldn't look\nat my eyes!", 850, 1850);
+        }
+    },
+
+    swag: function()
+    {
+        sg = 1;
+        shades.destroy();
+    },
+
+    message: function(text, xCoord, yCoord)
+    {
+        var msg = this.add.text(xCoord,yCoord,text,{ font: "20px Bradley Hand", fill: "#000000", backgroundColor: "#fddab9"});
+        msg.visible = true
+        setTimeout(() => { msg.visible = false; }, 1000);
+    }
+});
+
+var medusaSadgeScene = new Phaser.Class({
+    Extends: Phaser.Scene,
+
+    initialize: function medusaSadgeScene ()
+    {
+        Phaser.Scene.call(this, {key: 'medusaSadgeScene'});
+    },
+
+    preload: function() {},
+
+    create: function() {},
 
     update: function() {}
 });
@@ -531,7 +635,7 @@ var config = {
             debug: true
         }
     },
-    scene: [bootScene, profsIntro, baseScene, medusaStartScene, profsOne, poseidonSceneStart, templeScene, medusaPoseidonScene, profsTwo, perseusSceneStart]
+    scene: [bootScene, profsIntro, baseScene, medusaStartScene, profsOne, poseidonSceneStart, templeScene, medusaPoseidonScene, profsTwo, sunglassesSceneStart, medusaSadgeScene, perseusSceneStart]
 };
 
 var game = new Phaser.Game(config);
