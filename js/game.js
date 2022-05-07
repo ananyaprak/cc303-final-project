@@ -2,7 +2,7 @@ var cursors;
 var keyA, keyS, keyD, keyW;
 var up, down, left, right;
 var keyY, keyN;
-var sg = 0;
+var sg = 0, head = 0;
 
 var bootScene = new Phaser.Class({
 
@@ -41,7 +41,7 @@ var bootScene = new Phaser.Class({
 
         this.input.on('pointerdown', function()
         {
-            this.scene.start('percyHeadScene');
+            this.scene.start('athenaShieldScene');
         }, this);
     },
 
@@ -326,6 +326,8 @@ var templeScene = new Phaser.Class({
         player = this.physics.add.sprite(2200, 2350, 'p').setSize(24,40).setOffset(20,20);
         worldLayer.setCollisionByExclusion([-1]);
         this.physics.add.collider(player, worldLayer);
+
+        var aboveLayer = map.createStaticLayer("Above", tileset);
 
         poseidon = this.physics.add.sprite(2150, 2200, 'poseidon').setScale(1.5).setSize(30,40).setOffset(20,20);
         poseidon.body.immovable = true;
@@ -792,17 +794,190 @@ var profsFour = new Phaser.Class({
     update: function() {}
 });
 
-var shieldScene = new Phaser.Class({
+var shieldStartScene = new Phaser.Class({
     Extends: Phaser.Scene,
 
-    initialize: function shieldScene ()
+    initialize: function shieldStartScene ()
     {
-        Phaser.Scene.call(this, {key: 'shieldScene'});
+        Phaser.Scene.call(this, {key: 'shieldStartScene'});
     },
 
-    preload: function() {},
+    preload: function()
+    {
+        this.load.image('posBG', 'assets/athenatemple.png');
+        this.load.spritesheet('percy', 'assets/perseus.png', { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('head', 'assets/medHead.png', { frameWidth: 64, frameHeight: 64 });
+    },
 
-    create: function() {},
+    create: function()
+    {
+        this.add.image(400, 300, 'posBG').setScale(3.55);
+        this.physics.add.sprite(650, 380, 'percy').setScale(8);
+        this.physics.add.sprite(520, 520, 'head').setScale(5);
+
+        var style = { font: "30px Bradley Hand", fill: "#000000", backgroundColor: "#fddab9"};
+        var txtOne = this.add.text(100, 75, "Now that we're back at Athena's temple,\ndo me a favor, will you?", style);
+        setTimeout(() => { txtOne.visible = false; }, 6000);
+        setTimeout(() => { txtTwo = this.add.text(100, 75, "Go put this head on the empty\npedestal next to her fountain.", style); }, 6000);
+        setTimeout(() => { txtTwo.visible = false; }, 13000);
+        setTimeout(() => { txtThr = this.add.text(100, 75, "I'm sure she'll have some use for\nit. Talk to her after!", style); }, 13000);
+        setTimeout(() => { txtThr.visible = false; }, 19000);
+
+        setTimeout(() => {this.scene.start('athenaScene');}, 19000);
+    },
+
+    update: function() {}
+});
+
+var athenaScene = new Phaser.Class({
+    Extends: Phaser.Scene,
+
+    initialize: function athenaScene ()
+    {
+        Phaser.Scene.call(this, {key: 'athenaScene'});
+    },
+
+    preload: function()
+    {
+        this.load.image("tiles", "assets/magecity.png");
+        this.load.tilemapTiledJSON("mapPos", "assets/poseidon.json");
+        this.load.spritesheet('p', 'assets/utplayer.png', { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('percy', 'assets/perseus.png', { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('athena', 'assets/athena.png', { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('head', 'assets/medHead.png', { frameWidth: 64, frameHeight: 64 });
+    },
+
+    create: function()
+    {
+        var map = this.make.tilemap({ key: "mapPos" });
+
+        this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+
+        var tileset = map.addTilesetImage("magecity", "tiles");
+        var belowLayer = map.createStaticLayer("Below", tileset);
+        var worldLayer = map.createStaticLayer("World", tileset);
+
+        player = this.physics.add.sprite(2200, 2350, 'p').setSize(24,40).setOffset(20,20);
+        worldLayer.setCollisionByExclusion([-1]);
+        this.physics.add.collider(player, worldLayer);
+
+        var aboveLayer = map.createStaticLayer("Above", tileset);
+
+        dummy = this.physics.add.sprite(1775, 2325, 'p').setSize(34,62).setOffset(20,10);
+        dummy.visible = false;
+        dummy.body.immovable = true;
+        this.physics.add.collider(player, dummy, this.onMeetPedestal, false, this);
+
+        percy = this.physics.add.sprite(2150, 2200, 'percy').setScale(1.5).setSize(30,40).setOffset(20,20);
+        percy.body.immovable = true;
+        this.physics.add.collider(player, percy, this.onMeetPercy, false, this);
+
+        head = this.physics.add.sprite(2100, 2225, 'head').setScale(1.5).setSize(30,20).setOffset(12,20);
+        this.physics.add.collider(player, head, this.onMeetHead, false, this);
+
+        athena = this.physics.add.sprite(1650, 1900, 'athena').setScale(1.5).setSize(40,40).setOffset(10,20);
+        athena.body.immovable = true;
+        this.physics.add.collider(player, athena, this.onMeetAthena, false, this);
+
+        camera = this.cameras.main;
+        camera.startFollow(player);
+        camera.setZoom(1.2);
+        camera.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+    },
+
+    update: function()
+    {
+        if(keyA.isDown || left.isDown) {
+            player.setVelocityX(-160);
+            player.setVelocityY(0);
+         } else if(keyS.isDown || down.isDown) {
+            player.setVelocityX(0);
+            player.setVelocityY(160);
+         } else if(keyD.isDown || right.isDown) {
+            player.setVelocityX(160);
+            player.setVelocityY(0);
+         } else if(keyW.isDown || up.isDown) {
+            player.setVelocityX(0);
+            player.setVelocityY(-160);
+         } else {
+            player.setVelocity(0);
+         };
+    },
+
+    onMeetPercy: function()
+    {
+        var style = { font: "20px Bradley Hand", fill: "#000000", backgroundColor: "#fddab9"};
+        var txt = this.add.text(2050, 2100, "Get this head to the\nempty pedestal,\nthen talk to Athena!", style);
+        setTimeout(() => { txt.visible = false; }, 3000);
+    },
+
+    onMeetHead: function()
+    {
+        head.destroy();
+        head = 1;
+    },
+
+    onMeetPedestal: function()
+    {
+        if (head == 1)
+        {
+            this.physics.add.sprite(1775, 2325, 'head').setScale(1.5).setSize(30,40).setOffset(20,20);
+            head = 2;
+        }
+        else
+        {
+            var style = { font: "20px Bradley Hand", fill: "#000000", backgroundColor: "#fddab9"};
+            var txt = this.add.text(1775, 2250, "So this is where the head goes!", style);
+            setTimeout(() => { txt.visible = false; }, 3000);
+        }
+    },
+
+    onMeetAthena: function()
+    {
+        if (head == 2)
+        {
+            this.scene.start('athenaShieldScene');
+        }
+        else
+        {
+            var style = { font: "20px Bradley Hand", fill: "#000000", backgroundColor: "#fddab9"};
+            var txt = this.add.text(1650, 1800, "Do not speak to me\nwithout a reason!", style);
+            setTimeout(() => { txt.visible = false; }, 3000);
+        }
+    }
+});
+
+var athenaShieldScene = new Phaser.Class({
+    Extends: Phaser.Scene,
+
+    initialize: function athenaShieldScene ()
+    {
+        Phaser.Scene.call(this, {key: 'athenaShieldScene'});
+    },
+
+    preload: function()
+    {
+        this.load.image('posBG', 'assets/athenatemple.png');
+        this.load.spritesheet('athena', 'assets/athena.png', { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('shield', 'assets/shield.png', { frameWidth: 64, frameHeight: 64 });
+    },
+
+    create: function()
+    {
+        this.add.image(400, 300, 'posBG').setScale(3.55);
+        this.physics.add.sprite(650, 380, 'athena').setScale(8);
+        this.physics.add.sprite(550, 500, 'shield').setScale(4);
+
+        var style = { font: "30px Bradley Hand", fill: "#000000", backgroundColor: "#fddab9"};
+        var txtOne = this.add.text(100, 75, "I put Medusa's head on my shield!", style);
+        setTimeout(() => { txtOne.visible = false; }, 6000);
+        setTimeout(() => { txtTwo = this.add.text(100, 75, "With this, I can further\nterrorize my enemies.", style); }, 6000);
+        setTimeout(() => { txtTwo.visible = false; }, 13000);
+        setTimeout(() => { txtThr = this.add.text(100, 75, "My strength grows by the day!", style); }, 13000);
+        setTimeout(() => { txtThr.visible = false; }, 19000);
+
+        setTimeout(() => {this.scene.start('profsFive');}, 19000);
+    },
 
     update: function() {}
 });
@@ -820,7 +995,7 @@ var config = {
             debug: true
         }
     },
-    scene: [bootScene, profsIntro, baseScene, medusaStartScene, profsOne, poseidonSceneStart, templeScene, medusaPoseidonScene, profsTwo, sunglassesSceneStart, medusaSadgeScene, profsThree, perseusSceneStart, percyHeadScene, profsFour, shieldScene]
+    scene: [bootScene, profsIntro, baseScene, medusaStartScene, profsOne, poseidonSceneStart, templeScene, medusaPoseidonScene, profsTwo, sunglassesSceneStart, medusaSadgeScene, profsThree, perseusSceneStart, percyHeadScene, profsFour, shieldStartScene, athenaScene, athenaShieldScene]
 };
 
 var game = new Phaser.Game(config);
