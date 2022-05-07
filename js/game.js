@@ -722,7 +722,7 @@ var perseusSceneStart = new Phaser.Class({
     onMeetSnek: function(player, sneks)
     {
         player.x = 1700;
-        player.y = 2350;
+        player.y = 2300;
         sneks.setVelocityY(0);
         sneks.setVelocityX(65);
     },
