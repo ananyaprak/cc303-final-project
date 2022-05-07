@@ -39,10 +39,10 @@ var bootScene = new Phaser.Class({
         keyY = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Y);
         keyN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.N);
 
-        this.input.on('pointerdown', function()
-        {
-            this.scene.start('athenaShieldScene');
-        }, this);
+        // this.input.on('pointerdown', function()
+        // {
+        //     this.scene.start('SCENENAMEHERE');
+        // }, this);
     },
 
     update: function()
@@ -254,10 +254,10 @@ var profsOne = new Phaser.Class({
         setTimeout(() => { txtFour.visible = false; }, 24000);
 
         setTimeout(() => { this.add.image(400, 300, 'tt1').setScale(1.2); }, 24000);
-        setTimeout(() => { this.add.image(400, 300, 'tt2').setScale(1.2); }, 26000);
-        setTimeout(() => { this.add.image(400, 300, 'tt3').setScale(1.2); }, 28000);
+        setTimeout(() => { this.add.image(400, 300, 'tt2').setScale(1.2); }, 25000);
+        setTimeout(() => { this.add.image(400, 300, 'tt3').setScale(1.2); }, 26000);
 
-        setTimeout(() => {this.scene.start('poseidonSceneStart');}, 30000);
+        setTimeout(() => {this.scene.start('poseidonSceneStart');}, 27000);
     },
 
     update: function() {}
@@ -380,7 +380,9 @@ var medusaPoseidonScene = new Phaser.Class({
     {
         this.load.image('posBG', 'assets/athenatemple.png');
         this.load.spritesheet('medusa', 'assets/medusa.png', { frameWidth: 64, frameHeight: 64 });
-
+        this.load.image('tt1', 'assets/tt1.png');
+        this.load.image('tt2', 'assets/tt2.png');
+        this.load.image('tt3', 'assets/tt3.png');
     },
 
     create: function()
@@ -396,7 +398,13 @@ var medusaPoseidonScene = new Phaser.Class({
         setTimeout(() => { txtThr = this.add.text(300, 100, "...and in a temple too, the\naudacity!", style); }, 8000);
         setTimeout(() => { txtThr.visible = false; }, 12000);
         setTimeout(() => { txtFour = this.add.text(300, 100, "He's a god, you know. I\nguess I have no choice...", style); }, 12000);
-        setTimeout(() => {this.scene.start('profsTwo');}, 16000);
+        setTimeout(() => { txtFour.visible = false; }, 16000);
+
+        setTimeout(() => { this.add.image(400, 300, 'tt3').setScale(1.2); }, 16000);
+        setTimeout(() => { this.add.image(400, 300, 'tt2').setScale(1.2); }, 17000);
+        setTimeout(() => { this.add.image(400, 300, 'tt1').setScale(1.2); }, 18000);
+
+        setTimeout(() => {this.scene.start('profsTwo');}, 19000);
     },
 
     update: function() {}
@@ -437,10 +445,10 @@ var profsTwo = new Phaser.Class({
         setTimeout(() => { txtThr.visible = false; }, 21000);
 
         setTimeout(() => { this.add.image(400, 300, 'tt1').setScale(1.2); }, 21000);
-        setTimeout(() => { this.add.image(400, 300, 'tt2').setScale(1.2); }, 23000);
-        setTimeout(() => { this.add.image(400, 300, 'tt3').setScale(1.2); }, 25000);
+        setTimeout(() => { this.add.image(400, 300, 'tt2').setScale(1.2); }, 22000);
+        setTimeout(() => { this.add.image(400, 300, 'tt3').setScale(1.2); }, 23000);
 
-        setTimeout(() => {this.scene.start('sunglassesSceneStart');}, 25000);
+        setTimeout(() => {this.scene.start('sunglassesSceneStart');}, 24000);
     },
 
     update: function() {}
@@ -547,6 +555,9 @@ var medusaSadgeScene = new Phaser.Class({
     {
         this.load.image('stats','assets/statueGarden.png');
         this.load.spritesheet('meduswag', 'assets/medusaSwag.png', { frameWidth: 64, frameHeight: 64 });
+        this.load.image('tt1', 'assets/tt1.png');
+        this.load.image('tt2', 'assets/tt2.png');
+        this.load.image('tt3', 'assets/tt3.png');
     },
 
     create: function()
@@ -564,7 +575,11 @@ var medusaSadgeScene = new Phaser.Class({
         setTimeout(() => { txtFour = this.add.text(400, 75, "Poseidon and I were in her\ntemple but I never wanted\nanything to do with him!", style); }, 18000);
         setTimeout(() => { txtFour.visible = false; }, 28000);
 
-        setTimeout(() => {this.scene.start('profsThree');}, 28000);
+        setTimeout(() => { this.add.image(400, 300, 'tt3').setScale(1.2); }, 28000);
+        setTimeout(() => { this.add.image(400, 300, 'tt2').setScale(1.2); }, 29000);
+        setTimeout(() => { this.add.image(400, 300, 'tt1').setScale(1.2); }, 30000);
+
+        setTimeout(() => {this.scene.start('profsThree');}, 31000);
     },
 
     update: function() {}
@@ -605,10 +620,10 @@ var profsThree = new Phaser.Class({
         setTimeout(() => { txtThr.visible = false; }, 20000);
 
         setTimeout(() => { this.add.image(400, 300, 'tt1').setScale(1.2); }, 20000);
-        setTimeout(() => { this.add.image(400, 300, 'tt2').setScale(1.2); }, 22000);
-        setTimeout(() => { this.add.image(400, 300, 'tt3').setScale(1.2); }, 24000);
+        setTimeout(() => { this.add.image(400, 300, 'tt2').setScale(1.2); }, 21000);
+        setTimeout(() => { this.add.image(400, 300, 'tt3').setScale(1.2); }, 22000);
 
-        setTimeout(() => {this.scene.start('perseusSceneStart');}, 26000);
+        setTimeout(() => {this.scene.start('perseusSceneStart');}, 23000);
     },
 
     update: function() {}
@@ -730,6 +745,9 @@ var percyHeadScene = new Phaser.Class({
         this.load.image('stats','assets/statueGarden.png');
         this.load.spritesheet('percy', 'assets/perseus.png', { frameWidth: 64, frameHeight: 64 });
         this.load.spritesheet('head', 'assets/medHead.png', { frameWidth: 64, frameHeight: 64 });
+        this.load.image('tt1', 'assets/tt1.png');
+        this.load.image('tt2', 'assets/tt2.png');
+        this.load.image('tt3', 'assets/tt3.png');
     },
 
     create: function()
@@ -744,7 +762,11 @@ var percyHeadScene = new Phaser.Class({
         setTimeout(() => { txtTwo = this.add.text(100, 75, "Careful not to look in her\neyes. They still hold her\nbeastly power.", style); }, 6000);
         setTimeout(() => { txtTwo.visible = false; }, 12000);
 
-        setTimeout(() => {this.scene.start('profsFour');}, 12000);
+        setTimeout(() => { this.add.image(400, 300, 'tt3').setScale(1.2); }, 12000);
+        setTimeout(() => { this.add.image(400, 300, 'tt2').setScale(1.2); }, 13000);
+        setTimeout(() => { this.add.image(400, 300, 'tt1').setScale(1.2); }, 14000);
+
+        setTimeout(() => {this.scene.start('profsFour');}, 15000);
     },
 
     update: function() {}
@@ -785,10 +807,10 @@ var profsFour = new Phaser.Class({
         setTimeout(() => { txtThr.visible = false; }, 20000);
 
         setTimeout(() => { this.add.image(400, 300, 'tt1').setScale(1.2); }, 20000);
-        setTimeout(() => { this.add.image(400, 300, 'tt2').setScale(1.2); }, 22000);
-        setTimeout(() => { this.add.image(400, 300, 'tt3').setScale(1.2); }, 24000);
+        setTimeout(() => { this.add.image(400, 300, 'tt2').setScale(1.2); }, 21000);
+        setTimeout(() => { this.add.image(400, 300, 'tt3').setScale(1.2); }, 22000);
 
-        setTimeout(() => {this.scene.start('shieldScene');}, 26000);
+        setTimeout(() => {this.scene.start('shieldStartScene');}, 23000);
     },
 
     update: function() {}
@@ -960,6 +982,9 @@ var athenaShieldScene = new Phaser.Class({
         this.load.image('posBG', 'assets/athenatemple.png');
         this.load.spritesheet('athena', 'assets/athena.png', { frameWidth: 64, frameHeight: 64 });
         this.load.spritesheet('shield', 'assets/shield.png', { frameWidth: 64, frameHeight: 64 });
+        this.load.image('tt1', 'assets/tt1.png');
+        this.load.image('tt2', 'assets/tt2.png');
+        this.load.image('tt3', 'assets/tt3.png');
     },
 
     create: function()
@@ -976,7 +1001,57 @@ var athenaShieldScene = new Phaser.Class({
         setTimeout(() => { txtThr = this.add.text(100, 75, "My strength grows by the day!", style); }, 13000);
         setTimeout(() => { txtThr.visible = false; }, 19000);
 
-        setTimeout(() => {this.scene.start('profsFive');}, 19000);
+        setTimeout(() => { this.add.image(400, 300, 'tt3').setScale(1.2); }, 19000);
+        setTimeout(() => { this.add.image(400, 300, 'tt2').setScale(1.2); }, 20000);
+        setTimeout(() => { this.add.image(400, 300, 'tt1').setScale(1.2); }, 21000);
+
+        setTimeout(() => {this.scene.start('profsFive');}, 22000);
+    },
+
+    update: function() {}
+});
+
+var profsFive = new Phaser.Class({
+    Extends: Phaser.Scene,
+
+    initialize: function profsFive ()
+    {
+        Phaser.Scene.call(this, {key: 'profsFive'});
+    },
+
+    preload: function()
+    {
+        this.load.image('background', 'assets/statue.png');
+        this.load.spritesheet('br', 'assets/brookerich.png', { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('jg', 'assets/joanngulizio.png', { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('sl', 'assets/stevelundy.png', { frameWidth: 64, frameHeight: 64 });
+        this.load.image('tt1', 'assets/tt1.png');
+        this.load.image('tt2', 'assets/tt2.png');
+        this.load.image('tt3', 'assets/tt3.png');
+    },
+
+    create: function()
+    {
+        this.add.image(400, 300, 'background').setScale(1.3);
+        this.physics.add.sprite(550, 375, 'br').setScale(5);
+        this.physics.add.sprite(625, 375, 'jg').setScale(5);
+        this.physics.add.sprite(700, 375, 'sl').setScale(5);
+
+        var style = { font: "30px Bradley Hand", fill: "#000000", backgroundColor: "#fddab9"};
+        var txtOne = this.add.text(100, 100, "Medusa was a victim throughout\nher life, and even into her death.", style);
+        setTimeout(() => { txtOne.visible = false; }, 7000);
+        setTimeout(() => { txtTwo = this.add.text(100, 100, "She was raped, punished for it,\nkilled for her punishment, then\nher body was disrespected.", style); }, 7000);
+        setTimeout(() => { txtTwo.visible = false; }, 15000);
+        setTimeout(() => { txtThr = this.add.text(100, 100, "Garbati's statue here serves as an\nicon to the women who fight for\ntheir respect and safety in society.", style); }, 15000);
+        setTimeout(() => { txtThr.visible = false; }, 23000);
+        setTimeout(() => { txtFour = this.add.text(100, 100, "Though this is the case, it's important\nto remember that even this statue\nis controversial due to its nudity.", style); }, 23000);
+        setTimeout(() => { txtFour.visible = false; }, 30000);
+        setTimeout(() => { txtFive = this.add.text(100, 100, "Whether you find this piece to be ill-advised\nor empowering, it's important that you know\nits Greek origins.", style); }, 30000);
+        setTimeout(() => { txtFive.visible = false; }, 37000);
+        setTimeout(() => { txtFive = this.add.text(100, 100, "Congrats on completing the Medusa module!\nSee you later.", style); }, 37000);
+        setTimeout(() => { txtFive.visible = false; }, 42000);
+
+        setTimeout(() => { this.scene.start('baseScene'); }, 42000);
     },
 
     update: function() {}
@@ -992,10 +1067,10 @@ var config = {
         default: 'arcade',
         arcade: {
             gravity: {},
-            debug: true
+            debug: false
         }
     },
-    scene: [bootScene, profsIntro, baseScene, medusaStartScene, profsOne, poseidonSceneStart, templeScene, medusaPoseidonScene, profsTwo, sunglassesSceneStart, medusaSadgeScene, profsThree, perseusSceneStart, percyHeadScene, profsFour, shieldStartScene, athenaScene, athenaShieldScene]
+    scene: [bootScene, profsIntro, baseScene, medusaStartScene, profsOne, poseidonSceneStart, templeScene, medusaPoseidonScene, profsTwo, sunglassesSceneStart, medusaSadgeScene, profsThree, perseusSceneStart, percyHeadScene, profsFour, shieldStartScene, athenaScene, athenaShieldScene, profsFive]
 };
 
 var game = new Phaser.Game(config);
