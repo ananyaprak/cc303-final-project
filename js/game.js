@@ -41,7 +41,7 @@ var bootScene = new Phaser.Class({
 
         this.input.on('pointerdown', function()
         {
-            this.scene.start('perseusSceneStart');
+            this.scene.start('percyHeadScene');
         }, this);
     },
 
@@ -612,7 +612,6 @@ var profsThree = new Phaser.Class({
     update: function() {}
 });
 
-
 var perseusSceneStart = new Phaser.Class({
     Extends: Phaser.Scene,
 
@@ -724,6 +723,83 @@ var percyHeadScene = new Phaser.Class({
         Phaser.Scene.call(this, {key: 'percyHeadScene'});
     },
 
+    preload: function()
+    {
+        this.load.image('stats','assets/statueGarden.png');
+        this.load.spritesheet('percy', 'assets/perseus.png', { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('head', 'assets/medHead.png', { frameWidth: 64, frameHeight: 64 });
+    },
+
+    create: function()
+    {
+        this.add.image(400, 300, 'stats').setScale(1.5);
+        this.physics.add.sprite(650, 380, 'percy').setScale(8);
+        this.physics.add.sprite(520, 520, 'head').setScale(5);
+
+        var style = { font: "30px Bradley Hand", fill: "#000000", backgroundColor: "#fddab9"};
+        var txtOne = this.add.text(100, 75, "In the name of Athena, the\nmonster has been slain!", style);
+        setTimeout(() => { txtOne.visible = false; }, 6000);
+        setTimeout(() => { txtTwo = this.add.text(100, 75, "Careful not to look in her\neyes. They still hold her\nbeastly power.", style); }, 6000);
+        setTimeout(() => { txtTwo.visible = false; }, 12000);
+
+        setTimeout(() => {this.scene.start('profsFour');}, 12000);
+    },
+
+    update: function() {}
+});
+
+var profsFour = new Phaser.Class({
+    Extends: Phaser.Scene,
+
+    initialize: function profsFour ()
+    {
+        Phaser.Scene.call(this, {key: 'profsFour'});
+    },
+
+    preload: function()
+    {
+        this.load.image('background', 'assets/statue.png');
+        this.load.spritesheet('br', 'assets/brookerich.png', { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('jg', 'assets/joanngulizio.png', { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('sl', 'assets/stevelundy.png', { frameWidth: 64, frameHeight: 64 });
+        this.load.image('tt1', 'assets/tt1.png');
+        this.load.image('tt2', 'assets/tt2.png');
+        this.load.image('tt3', 'assets/tt3.png');
+    },
+
+    create: function()
+    {
+        this.add.image(400, 300, 'background').setScale(1.3);
+        this.physics.add.sprite(550, 375, 'br').setScale(5);
+        this.physics.add.sprite(625, 375, 'jg').setScale(5);
+        this.physics.add.sprite(700, 375, 'sl').setScale(5);
+
+        var style = { font: "30px Bradley Hand", fill: "#000000", backgroundColor: "#fddab9"};
+        var txtOne = this.add.text(100, 100, "Medusa was killed for being something\nthat she was forcefully turned into.", style);
+        setTimeout(() => { txtOne.visible = false; }, 7000);
+        setTimeout(() => { txtTwo = this.add.text(100, 100, "Her life was filled with undeserved suffering.", style); }, 7000);
+        setTimeout(() => { txtTwo.visible = false; }, 11000);
+        setTimeout(() => { txtThr = this.add.text(100, 100, "But even after death she was disrespected.", style); }, 11000);
+        setTimeout(() => { txtThr.visible = false; }, 20000);
+
+        setTimeout(() => { this.add.image(400, 300, 'tt1').setScale(1.2); }, 20000);
+        setTimeout(() => { this.add.image(400, 300, 'tt2').setScale(1.2); }, 22000);
+        setTimeout(() => { this.add.image(400, 300, 'tt3').setScale(1.2); }, 24000);
+
+        setTimeout(() => {this.scene.start('shieldScene');}, 26000);
+    },
+
+    update: function() {}
+});
+
+var shieldScene = new Phaser.Class({
+    Extends: Phaser.Scene,
+
+    initialize: function shieldScene ()
+    {
+        Phaser.Scene.call(this, {key: 'shieldScene'});
+    },
+
     preload: function() {},
 
     create: function() {},
@@ -744,7 +820,7 @@ var config = {
             debug: true
         }
     },
-    scene: [bootScene, profsIntro, baseScene, medusaStartScene, profsOne, poseidonSceneStart, templeScene, medusaPoseidonScene, profsTwo, sunglassesSceneStart, medusaSadgeScene, profsThree, perseusSceneStart, percyHeadScene]
+    scene: [bootScene, profsIntro, baseScene, medusaStartScene, profsOne, poseidonSceneStart, templeScene, medusaPoseidonScene, profsTwo, sunglassesSceneStart, medusaSadgeScene, profsThree, perseusSceneStart, percyHeadScene, profsFour, shieldScene]
 };
 
 var game = new Phaser.Game(config);
