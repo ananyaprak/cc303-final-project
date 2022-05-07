@@ -724,6 +724,7 @@ var perseusSceneStart = new Phaser.Class({
         player.x = 1700;
         player.y = 2350;
         sneks.setVelocityY(0);
+        sneks.setVelocityX(65);
     },
 
     meetHead: function()
@@ -757,16 +758,18 @@ var percyHeadScene = new Phaser.Class({
         this.physics.add.sprite(520, 520, 'head').setScale(5);
 
         var style = { font: "30px Bradley Hand", fill: "#000000", backgroundColor: "#fddab9"};
-        var txtOne = this.add.text(100, 75, "In the name of Athena, the\nmonster has been slain!", style);
+        var txtOne = this.add.text(100, 75, "In the name of Athena, the\nmonster has been slain by\nPerseus himself!", style);
         setTimeout(() => { txtOne.visible = false; }, 6000);
-        setTimeout(() => { txtTwo = this.add.text(100, 75, "Careful not to look in her\neyes. They still hold her\nbeastly power.", style); }, 6000);
-        setTimeout(() => { txtTwo.visible = false; }, 12000);
+        setTimeout(() => { txtTwo = this.add.text(100, 75, "That's me, by the way.", style); }, 6000);
+        setTimeout(() => { txtTwo.visible = false; }, 9000);
+        setTimeout(() => { txtTwo = this.add.text(100, 75, "Careful not to look in her\neyes. They still hold her\nbeastly power.", style); }, 9000);
+        setTimeout(() => { txtTwo.visible = false; }, 15000);
 
-        setTimeout(() => { this.add.image(400, 300, 'tt3').setScale(1.2); }, 12000);
-        setTimeout(() => { this.add.image(400, 300, 'tt2').setScale(1.2); }, 13000);
-        setTimeout(() => { this.add.image(400, 300, 'tt1').setScale(1.2); }, 14000);
+        setTimeout(() => { this.add.image(400, 300, 'tt3').setScale(1.2); }, 15000);
+        setTimeout(() => { this.add.image(400, 300, 'tt2').setScale(1.2); }, 16000);
+        setTimeout(() => { this.add.image(400, 300, 'tt1').setScale(1.2); }, 17000);
 
-        setTimeout(() => {this.scene.start('profsFour');}, 15000);
+        setTimeout(() => {this.scene.start('profsFour');}, 18000);
     },
 
     update: function() {}
