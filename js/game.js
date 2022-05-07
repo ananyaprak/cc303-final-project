@@ -41,7 +41,7 @@ var bootScene = new Phaser.Class({
 
         this.input.on('pointerdown', function()
         {
-            this.scene.start('profsTwo');
+            this.scene.start('perseusSceneStart');
         }, this);
     },
 
@@ -111,7 +111,7 @@ var baseScene = new Phaser.Class({
     {
         this.load.image("tiles", "assets/magecity.png");
         this.load.tilemapTiledJSON("map", "assets/medusaBase.json");
-        this.load.spritesheet('p', 'assets/a&mfoe.png', { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('p', 'assets/utplayer.png', { frameWidth: 64, frameHeight: 64 });
         this.load.image('echo', 'assets/narcissus_flower.png');
         this.load.image('antigone', 'assets/grave.png');
         this.load.image('ritual', 'assets/vase.png');
@@ -308,7 +308,7 @@ var templeScene = new Phaser.Class({
     {
         this.load.image("tiles", "assets/magecity.png");
         this.load.tilemapTiledJSON("mapPos", "assets/poseidon.json");
-        this.load.spritesheet('p', 'assets/a&mfoe.png', { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('p', 'assets/utplayer.png', { frameWidth: 64, frameHeight: 64 });
         this.load.spritesheet('poseidon', 'assets/poseidon.png', { frameWidth: 64, frameHeight: 64 });
         this.load.spritesheet('medusa', 'assets/medusa.png', { frameWidth: 64, frameHeight: 64 });
     },
@@ -456,7 +456,7 @@ var sunglassesSceneStart = new Phaser.Class({
     {
         this.load.image("tiles", "assets/magecity.png");
         this.load.tilemapTiledJSON("mapPer", "assets/perseus.json");
-        this.load.spritesheet('p', 'assets/a&mfoe.png', { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('p', 'assets/utplayer.png', { frameWidth: 64, frameHeight: 64 });
         this.load.spritesheet('evil', 'assets/medusaEvil.png', { frameWidth: 64, frameHeight: 64 });
         this.load.spritesheet('shades', 'assets/sunglasses.png', { frameWidth: 32, frameHeight: 32 });
     },
@@ -625,8 +625,10 @@ var perseusSceneStart = new Phaser.Class({
     {
         this.load.image("tiles", "assets/magecity.png");
         this.load.tilemapTiledJSON("mapPer", "assets/perseus.json");
-        this.load.spritesheet('p', 'assets/a&mfoe.png', { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('p', 'assets/utplayer.png', { frameWidth: 64, frameHeight: 64 });
         this.load.spritesheet('sss', 'assets/sss.png', { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('percy', 'assets/perseus.png', { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('head', 'assets/medHead.png', { frameWidth: 64, frameHeight: 64 });
     },
 
     create: function()
@@ -639,18 +641,41 @@ var perseusSceneStart = new Phaser.Class({
         var belowLayer = map.createStaticLayer("Below", tileset);
         var worldLayer = map.createStaticLayer("World", tileset);
 
-        player = this.physics.add.sprite(1700, 2350, 'p').setSize(24,40).setOffset(20,20);
+        player = this.physics.add.sprite(1700, 2300, 'p').setSize(24,40).setOffset(20,20);
         worldLayer.setCollisionByExclusion([-1]);
         this.physics.add.collider(player, worldLayer);
 
-        var sneks = this.physics.add.staticGroup();
-        sneks.create(1700, 2200, 'sss').setSize(40,14).setOffset(10,34);
-        sneks.create(1800, 2100, 'sss').setSize(40,14).setOffset(10,34);
-        sneks.create(1850, 2350, 'sss').setSize(40,14).setOffset(10,34);
-        sneks.create(1550, 2400, 'sss').setSize(40,14).setOffset(10,34);
-        sneks.create(1650, 2450, 'sss').setSize(40,14).setOffset(10,34);
-        // sneks.create(1600, 2500, 'sss').setSize(40,14).setOffset(10,34);
-        // sneks.create(2000, 2700, 'sss').setSize(40,14).setOffset(10,34);
+        percy = this.physics.add.sprite(1400, 1600, 'percy').setScale(1.5).setSize(30,40).setOffset(12,20);
+        head = this.physics.add.sprite(1350, 1650, 'head').setScale(1.5).setSize(30,20).setOffset(12,20);
+        this.physics.add.collider(player, percy, this.meetHead, false, this);
+        this.physics.add.collider(player, head, this.meetHead, false, this);
+
+        var style = { font: "20px Bradley Hand", fill: "#000000", backgroundColor: "#fddab9"};
+        this.add.text(1400, 2250, "Those snakes look\ndangerous. But why\nare they so restless?", style);
+
+        var sneks = this.physics.add.group();
+        this.physics.add.collider(sneks, worldLayer);
+        s1 = sneks.create(1700, 2200, 'sss').setSize(40,14).setOffset(10,34);
+        s1.setVelocityX(65);
+        s1.setBounce(1);
+        s2 = sneks.create(1800, 2100, 'sss').setSize(40,14).setOffset(10,34);
+        s2.setVelocityX(65);
+        s2.setBounce(1);
+        s3 = sneks.create(1850, 2350, 'sss').setSize(40,14).setOffset(10,34);
+        s3.setVelocityX(65);
+        s3.setBounce(1);
+        s4 = sneks.create(1550, 2400, 'sss').setSize(40,14).setOffset(10,34);
+        s4.setVelocityX(65);
+        s4.setBounce(1);
+        s5 = sneks.create(1450, 1800, 'sss').setSize(40,14).setOffset(10,34);
+        s5.setVelocityX(65);
+        s5.setBounce(1);
+        s6 = sneks.create(1500, 1900, 'sss').setSize(40,14).setOffset(10,34);
+        s6.setVelocityX(65);
+        s6.setBounce(1);
+        s7 = sneks.create(1650, 2450, 'sss').setSize(40,14).setOffset(10,34);
+        s7.setVelocityX(65);
+        s7.setBounce(1);
         this.physics.add.collider(player, sneks, this.onMeetSnek, false, this);
 
         camera = this.cameras.main;
@@ -678,11 +703,32 @@ var perseusSceneStart = new Phaser.Class({
          };
     },
 
-    onMeetSnek: function()
+    onMeetSnek: function(player, sneks)
     {
         player.x = 1700;
         player.y = 2350;
+        sneks.setVelocityY(0);
+    },
+
+    meetHead: function()
+    {
+        this.scene.start('percyHeadScene');
     }
+});
+
+var percyHeadScene = new Phaser.Class({
+    Extends: Phaser.Scene,
+
+    initialize: function percyHeadScene ()
+    {
+        Phaser.Scene.call(this, {key: 'percyHeadScene'});
+    },
+
+    preload: function() {},
+
+    create: function() {},
+
+    update: function() {}
 });
 
 var config = {
@@ -698,7 +744,7 @@ var config = {
             debug: true
         }
     },
-    scene: [bootScene, profsIntro, baseScene, medusaStartScene, profsOne, poseidonSceneStart, templeScene, medusaPoseidonScene, profsTwo, sunglassesSceneStart, medusaSadgeScene, profsThree, perseusSceneStart]
+    scene: [bootScene, profsIntro, baseScene, medusaStartScene, profsOne, poseidonSceneStart, templeScene, medusaPoseidonScene, profsTwo, sunglassesSceneStart, medusaSadgeScene, profsThree, perseusSceneStart, percyHeadScene]
 };
 
 var game = new Phaser.Game(config);
